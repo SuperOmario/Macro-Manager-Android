@@ -5,13 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.zxing.client.android.Intents
 import com.google.zxing.integration.android.IntentIntegrator
 import com.journeyapps.barcodescanner.ScanIntentResult.parseActivityResult
 
@@ -19,17 +17,16 @@ import com.journeyapps.barcodescanner.ScanIntentResult.parseActivityResult
 //allows barcode scanning
 class Scan : AppCompatActivity()  {
     lateinit var btnBarcode: Button
-    lateinit var textView: TextView
-    lateinit var sendRequest: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scan)
-        title = "KotlinApp"
+        title = "MacroManager"
         btnBarcode = findViewById<Button>(R.id.button)
-        textView = findViewById<TextView>(R.id.txtContent)
         btnBarcode.setOnClickListener {
             val intentIntegrator = IntentIntegrator(this@Scan)
+            intentIntegrator.setCaptureActivity(AnyOrientationCaptureActivity::class.java)
+            intentIntegrator.setOrientationLocked(false)
             intentIntegrator.setBeepEnabled(false)
             intentIntegrator.setCameraId(0)
             intentIntegrator.setPrompt("SCAN")
@@ -50,9 +47,6 @@ class Scan : AppCompatActivity()  {
                 Toast.makeText(this, "cancelled", Toast.LENGTH_SHORT).show()
             } else {
                 Log.d("Scan", "Scanned")
-                Toast.makeText(this, "Scanned -> " + result.contents, Toast.LENGTH_SHORT)
-                    .show()
-                textView.text = result.contents
                 scan(result.contents)
             }
         } else {
@@ -61,19 +55,20 @@ class Scan : AppCompatActivity()  {
     }
 
     private fun scan (result : String) {
+        println(result)
         val queue = Volley.newRequestQueue(this)
-        val url = "https://macro-manager-api.herokuapp.com/food/$result"
+        val url = "https://macro-manager-dev.herokuapp.com/food/$result"
 
         // Request a string response from the provided URL.
         val stringRequest = StringRequest(
             Request.Method.GET, url,
             { response ->
-                // Display the first 500 characters of the response string.
-//                response.substring was causing crashes, must figure out why
-//                Log.d("Response", "Response is: ${response.substring(0, 500)}")
-                textView.text = "Response is: $response"
+                //Display the first 500 characters of the response string.
+                //response.substring was causing crashes, must figure out why
+                Log.d("Response", "Response is: $response")
+                Toast.makeText(this, response, Toast.LENGTH_LONG).show()
             },
-            { error -> textView.text = "That didn't work!".format(error.toString()) })
+            { error ->  Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show() })
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest)

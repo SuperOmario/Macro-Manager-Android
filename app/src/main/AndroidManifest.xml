@@ -2,13 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.macro_manager.macroapp">
-<!--  from https://www.tutorialspoint.com/barcode-scanning-in-android-using-kotlin
-        requests permission to use camera-->
+    <!--
+          from https://www.tutorialspoint.com/barcode-scanning-in-android-using-kotlin
+        requests permission to use camera
+    -->
     <uses-feature android:name="android.hardware.camera.autoFocus" />
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +20,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MacroApp">
+        <activity android:name=".AnyOrientationCaptureActivity"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">

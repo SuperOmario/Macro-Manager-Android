@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--  https://www.tutorialspoint.com/barcode-scanning-in-android-using-kotlin -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
@@ -13,20 +15,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:padding="8dp"
-        android:text="Tutorials Point"
+        android:text="Scanner"
         android:textColor="@android:color/holo_green_dark"
         android:textSize="48sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/txtContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/button"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="10dp"
-        android:text=" code reader"
-        android:textSize="16sp"
         android:textStyle="bold" />
 
     <Button
@@ -35,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="50dp"
-        android:text="Process" />
+        android:text="Scan Barcode"
+        android:onClick=""/>
 
 </RelativeLayout>

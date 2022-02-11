@@ -52,7 +52,7 @@ class MenuScanner : AppCompatActivity() {
 
     private fun startTextRecognizer() {
         mTextRecognizer = TextRecognizer.Builder(applicationContext).build()
-        if (!mTextRecognizer.isOperational()) {
+        if (!mTextRecognizer?.isOperational()!!) {
             Toast.makeText(
                 applicationContext,
                 "Oops ! Not able to start the text recognizer ...",
@@ -73,7 +73,7 @@ class MenuScanner : AppCompatActivity() {
                         ) == PackageManager.PERMISSION_GRANTED
                     ) {
                         try {
-                            mCameraSource.start(mSurfaceView!!.holder)
+                            mCameraSource?.start(mSurfaceView!!.holder)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -91,10 +91,10 @@ class MenuScanner : AppCompatActivity() {
                 }
 
                 override fun surfaceDestroyed(holder: SurfaceHolder) {
-                    mCameraSource.stop()
+                    mCameraSource?.stop()
                 }
             })
-            mTextRecognizer.setProcessor(object : Detector.Processor<TextBlock?> {
+            mTextRecognizer?.setProcessor(object : Detector.Processor<TextBlock?> {
                 override fun release() {}
                 override fun receiveDetections(detections: Detections<TextBlock?>) {
                     val items = detections.detectedItems

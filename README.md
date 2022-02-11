@@ -10,11 +10,12 @@
 
 ## Licenses, References and Appropriated Code <a name="Licenses"></a>
 
-[Barcode Scanning Code](https://www.tutorialspoint.com/barcode-scanning-in-android-using-kotlin)
-
-[Volley Library Training](https://developer.android.com/training/volley/simple)
-
 [Zxing License - Package for Barcode Scanner](https://github.com/zxing/zxing/blob/master/LICENSE)
 
 [Volley License - Package for Sending Requests](https://github.com/google/volley/blob/master/LICENSE)
 
+[Barcode Scanning Code](https://www.tutorialspoint.com/barcode-scanning-in-android-using-kotlin)
+
+[Volley Library Training](https://developer.android.com/training/volley/simple)
+
+[Google Play Services License - Used for text recognition in menu scanner](https://www.apache.org/licenses/LICENSE-2.0) 

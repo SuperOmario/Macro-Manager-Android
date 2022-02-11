@@ -4,14 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.zxing.integration.android.IntentIntegrator
 import com.journeyapps.barcodescanner.ScanIntentResult.parseActivityResult
+import org.json.JSONObject
 
 // taken from https://www.tutorialspoint.com/barcode-scanning-in-android-using-kotlin
 //allows barcode scanning
@@ -22,7 +25,7 @@ class Scan : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scan)
         title = "MacroManager"
-        btnBarcode = findViewById<Button>(R.id.button)
+        btnBarcode = findViewById<Button>(R.id.btnScan)
         btnBarcode.setOnClickListener {
             val intentIntegrator = IntentIntegrator(this@Scan)
             intentIntegrator.setCaptureActivity(AnyOrientationCaptureActivity::class.java)
@@ -49,19 +52,17 @@ class Scan : AppCompatActivity()  {
                 Log.d("Scan", "Scanned")
                 scan(result.contents)
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
+        } else super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun scan (result : String) {
         println(result)
         val queue = Volley.newRequestQueue(this)
-        val url = "https://macro-manager-dev.herokuapp.com/food/$result"
+        val url = URLs().foodURL + "/" + result
 
         // Request a string response from the provided URL.
         val stringRequest = StringRequest(
-            Request.Method.GET, url,
+            Request.Method.POST, url,
             { response ->
                 //Display the first 500 characters of the response string.
                 //response.substring was causing crashes, must figure out why
@@ -72,6 +73,51 @@ class Scan : AppCompatActivity()  {
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest)
+    }
+
+    fun diary(view: View) {
+        val queue = Volley.newRequestQueue(this)
+        val url = URLs().diaryURL
+        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
+            val i = Intent(applicationContext, Diary::class.java)
+            i.putExtra("DiaryEntries", response)
+            Log.i("Response", response.toString())
+            startActivity(i)},
+            { Log.e("Error", "Error retrieving response") })
+
+        queue.add(stringRequest)
+
+    }
+
+    fun recipe(view: View) {
+        val queue = Volley.newRequestQueue(this)
+        val url = URLs().recipeURL
+        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
+            val i = Intent(applicationContext, Recipe::class.java)
+            i.putExtra("RecipeEntries", response)
+            Log.i("Response", response.toString())
+            startActivity(i)},
+            { Log.e("Error", "Error retrieving response") })
+
+        queue.add(stringRequest)
+    }
+
+    fun food(view: View) {
+        val queue = Volley.newRequestQueue(this)
+        val url = URLs().foodURL
+        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
+            val i = Intent(applicationContext, Food::class.java)
+            i.putExtra("FoodEntries", response)
+            Log.i("Response", response.toString())
+            startActivity(i)},
+            { Log.e("Error", "Error retrieving response") })
+
+        queue.add(stringRequest)
+    }
+
+    fun menu(view: View) {
+        val i = Intent(applicationContext, MenuScanner::class.java)
+        startActivity(i)
     }
 
 }

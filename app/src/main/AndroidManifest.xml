@@ -20,12 +20,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MacroApp">
-        <activity android:name=".AnyOrientationCaptureActivity"
+        <activity
+            android:name=".Diary"
+            android:exported="false" />
+        <activity
+            android:name=".Recipe"
+            android:exported="false" />
+        <activity
+            android:name=".Food"
+            android:exported="false" />
+        <activity
+            android:name=".MenuScanner"
+            android:exported="false" />
+        <activity
+            android:name=".AnyOrientationCaptureActivity"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -38,7 +50,6 @@
         <activity
             android:name=".Scan"
             android:screenOrientation="fullSensor" />
-
     </application>
 
 </manifest>

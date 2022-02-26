@@ -19,3 +19,5 @@
 [Volley Library Training](https://developer.android.com/training/volley/simple)
 
 [Google Play Services License - Used for text recognition in menu scanner](https://www.apache.org/licenses/LICENSE-2.0) 
+
+[Request Body Editing](https://stackoverflow.com/questions/48424033/android-volley-post-request-with-json-object-in-body-and-getting-response-in-str)

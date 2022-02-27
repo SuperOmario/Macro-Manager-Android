@@ -21,6 +21,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MacroApp">
         <activity
+            android:name=".IngredientDetails"
+            android:exported="false" />
+        <activity
+            android:name=".recipe_detail"
+            android:exported="false"
+            android:parentActivityName=".Recipe" />
+        <activity
+            android:name=".foodDetails"
+            android:exported="false"
+            android:parentActivityName=".Food" />
+        <activity
             android:name=".Diary"
             android:exported="false" />
         <activity
@@ -37,7 +48,7 @@
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

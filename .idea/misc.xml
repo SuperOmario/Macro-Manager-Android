@@ -4,13 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3177083333333333" />
+        <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/activity_food_details.xml" value="0.33" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/activity_recipe_detail.xml" value="0.5" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/capture.xml" value="0.19114583333333332" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/diary.xml" value="0.4306010928961749" />
-        <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/diary_row.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/diary_row.xml" value="0.33" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/diarytest.xml" value="0.25" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/food.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/food_row.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/food_row.xml" value="0.5" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/menu_scanner.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/recipe.xml" value="0.14629629629629629" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/recipe_row.xml" value="0.5" />

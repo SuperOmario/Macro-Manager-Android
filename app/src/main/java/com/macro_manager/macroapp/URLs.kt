@@ -1,7 +1,13 @@
 package com.macro_manager.macroapp
 
 class URLs {
-    var foodURL : String = "https://macro-manager-dev.herokuapp.com/food"
-    var recipeURL : String = "https://macro-manager-dev.herokuapp.com/recipe"
-    var diaryURL : String = "https://macro-manager-dev.herokuapp.com/diary"
+    var foodURL : String
+        get() = "https://macro-manager-dev.herokuapp.com/food"
+        set(value) = TODO()
+    var recipeURL : String
+        get() = "https://macro-manager-dev.herokuapp.com/recipe"
+        set(value) = TODO()
+    var diaryURL : String
+        get() = "https://macro-manager-dev.herokuapp.com/diary"
+        set(value) = TODO()
 }

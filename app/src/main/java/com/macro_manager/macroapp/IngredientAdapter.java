@@ -14,14 +14,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
-public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder>{
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>{
 
     JSONArray response;
     Context context;
 
-    public FoodAdapter(Context ct, String response) {
+    public IngredientAdapter(Context ct, String response) {
         try {
             this.response = new JSONArray(response);
             System.out.println(this.response.getJSONObject(0));
@@ -34,14 +33,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
     @NonNull
     @Override
-    public FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.food_row,parent,false);
-        return new FoodAdapter.FoodViewHolder(view);
+        return new IngredientAdapter.IngredientViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
         try {
             holder.titleText.setText(response.getJSONObject(position).getString("product_name"));
             holder.calCount.setText(String.valueOf(response.getJSONObject(position).getJSONObject("nutriments").getInt("energy-kcal_100g")));
@@ -54,7 +53,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             holder.mainLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, foodDetails.class);
+                    Intent intent = new Intent(context, IngredientDetails.class);
                     intent.putExtra("title", holder.titleText.getText());
                     intent.putExtra("calories", holder.calCount.getText());
                     intent.putExtra("carbs", holder.carbCount.getText());
@@ -88,12 +87,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         }
     }
 
-    public class FoodViewHolder extends RecyclerView.ViewHolder {
+    public class IngredientViewHolder extends RecyclerView.ViewHolder {
 
         TextView titleText, calCount, carbCount, fatCount, proteinCount, idText, serving;
         ConstraintLayout mainLayout;
 
-        public FoodViewHolder(@NonNull View itemView) {
+        public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             titleText = itemView.findViewById(R.id.txtTitle);
             calCount = itemView.findViewById(R.id.txtCalCount);

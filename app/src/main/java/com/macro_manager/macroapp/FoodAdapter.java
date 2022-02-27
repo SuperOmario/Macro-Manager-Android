@@ -3,15 +3,18 @@ package com.macro_manager.macroapp;
 //This code is adapted from https://www.youtube.com/watch?v=18VcnYN5_LM&ab_channel=Stevdza-San
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder>{
 
@@ -41,10 +44,36 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
         try {
             holder.titleText.setText(response.getJSONObject(position).getString("product_name"));
-            holder.calCount.setText(response.getJSONObject(position).getJSONObject("nutriments").getString("energy-kcal_100g"));
-            holder.carbCount.setText(response.getJSONObject(position).getJSONObject("nutriments").getString("carbohydrates_100g"));
-            holder.fatCount.setText(response.getJSONObject(position).getJSONObject("nutriments").getString("fat_100g"));
-            holder.proteinCount.setText(response.getJSONObject(position).getJSONObject("nutriments").getString("proteins_100g"));
+            holder.calCount.setText(String.valueOf(response.getJSONObject(position).getJSONObject("nutriments").getInt("energy-kcal_100g")));
+            holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getJSONObject("nutriments").getInt("carbohydrates_100g")));
+            holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getJSONObject("nutriments").getInt("fat_100g")));
+            holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getJSONObject("nutriments").getInt("proteins_100g")));
+            holder.idText.setText(String.valueOf(response.getJSONObject(position).getInt("IngredientID")));
+            holder.serving.setText(response.getJSONObject(position).getString("serving_quantity"));
+            holder.barcode.setText(response.getJSONObject(position).getJSONObject("Barcode").getString("Valid"));
+            holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, foodDetails.class);
+                    intent.putExtra("title", holder.titleText.getText());
+                    intent.putExtra("calories", holder.calCount.getText());
+                    intent.putExtra("carbs", holder.carbCount.getText());
+                    intent.putExtra("fat", holder.fatCount.getText());
+                    intent.putExtra("protein", holder.proteinCount.getText());
+                    intent.putExtra("id", holder.idText.getText());
+                    intent.putExtra("servingSize", holder.serving.getText());
+                    intent.putExtra("barcode", holder.barcode.getText());
+                    context.startActivity(intent);
+                }
+            });
+            holder.mainLayout.setOnLongClickListener(new View.OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+
+                    return false;
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +91,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
     public class FoodViewHolder extends RecyclerView.ViewHolder {
 
-        TextView titleText, calCount, carbCount, fatCount, proteinCount;
+        TextView titleText, calCount, carbCount, fatCount, proteinCount, idText, serving, barcode;
+        ConstraintLayout mainLayout;
 
         public FoodViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,6 +101,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             carbCount = itemView.findViewById(R.id.txtCarbCount);
             fatCount = itemView.findViewById(R.id.txtFatCount);
             proteinCount = itemView.findViewById(R.id.txtProteinCount);
+            idText = itemView.findViewById(R.id.txtID);
+            serving = itemView.findViewById(R.id.txtServing);
+            barcode = itemView.findViewById(R.id.txtBarcode);
+            mainLayout = itemView.findViewById(R.id.mainLayout);
         }
     }
 }

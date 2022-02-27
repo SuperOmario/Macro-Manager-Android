@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
@@ -44,8 +45,11 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryViewHol
     @Override
     public void onBindViewHolder(@NonNull DiaryViewHolder holder, int position) {
         try {
-            holder.titleText.setText(response.getJSONObject(position).getString("Date"));
-            holder.meal.setText(response.getJSONObject(position).getString("Meal"));
+            holder.titleText.setText(response.getJSONObject(position).getString("Date").substring(0,10));
+            holder.calCount.setText(String.valueOf(response.getJSONObject(position).getInt("Calories")));
+            holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getInt("Fat")));
+            holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getInt("Carbohydrate")));
+            holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getInt("Protein")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,12 +68,19 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryViewHol
 
     public class DiaryViewHolder extends RecyclerView.ViewHolder{
 
-        TextView titleText, meal;
+        TextView titleText, calCount, carbCount, fatCount, proteinCount, idText, serving;
+        ConstraintLayout mainLayout;
 
         public DiaryViewHolder(@NonNull View itemView) {
             super(itemView);
-            titleText = itemView.findViewById(R.id.titleText);
-            meal = itemView.findViewById(R.id.meal);
+            titleText = itemView.findViewById(R.id.txtTitle);
+            calCount = itemView.findViewById(R.id.txtCalCount);
+            carbCount = itemView.findViewById(R.id.txtCarbCount);
+            fatCount = itemView.findViewById(R.id.txtFatCount);
+            proteinCount = itemView.findViewById(R.id.txtProteinCount);
+            idText = itemView.findViewById(R.id.txtID);
+            serving = itemView.findViewById(R.id.txtServing);
+            mainLayout = itemView.findViewById(R.id.mainLayout);
         }
     }
 }

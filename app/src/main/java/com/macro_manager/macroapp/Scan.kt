@@ -67,7 +67,16 @@ class Scan : AppCompatActivity()  {
                 //Display the first 500 characters of the response string.
                 //response.substring was causing crashes, must figure out why
                 Log.d("Response", "Response is: $response")
-                Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+                val intent = Intent(this, foodDetails::class.java)
+                val food = JSONObject(response)
+                intent.putExtra("title", food.getString("product_name"))
+                intent.putExtra("calories", food.getJSONObject("nutriments").getInt("energy-kcal_100g"))
+                intent.putExtra("carbs", food.getJSONObject("nutriments").getInt("carbohydrates_100g"))
+                intent.putExtra("fat", food.getJSONObject("nutriments").getInt("fat_100g"))
+                intent.putExtra("protein", food.getJSONObject("nutriments").getInt("proteins_100g"))
+                intent.putExtra("id", food.getInt("IngredientID"))
+                intent.putExtra("servingSize", food.getString("serving_quantity"))
+                this.startActivity(intent)
             },
             { error ->  Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show() })
 
@@ -90,29 +99,33 @@ class Scan : AppCompatActivity()  {
     }
 
     fun recipe(view: View) {
-        val queue = Volley.newRequestQueue(this)
-        val url = URLs().recipeURL
-        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
-            val i = Intent(applicationContext, Recipe::class.java)
-            i.putExtra("RecipeEntries", response)
-            Log.i("Response", response.toString())
-            startActivity(i)},
-            { Log.e("Error", "Error retrieving response") })
-
-        queue.add(stringRequest)
+//        val queue = Volley.newRequestQueue(this)
+//        val url = URLs().recipeURL
+//        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
+//            val i = Intent(applicationContext, Recipe::class.java)
+//            i.putExtra("RecipeEntries", response)
+//            Log.i("Response", response.toString())
+//            startActivity(i)},
+//            { Log.e("Error", "Error retrieving response") })
+//
+//        queue.add(stringRequest)
+        val i = Intent(applicationContext, Recipe::class.java)
+        startActivity(i)
     }
 
     fun food(view: View) {
-        val queue = Volley.newRequestQueue(this)
-        val url = URLs().foodURL
-        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
-            val i = Intent(applicationContext, Food::class.java)
-            i.putExtra("FoodEntries", response)
-            Log.i("Response", response.toString())
-            startActivity(i)},
-            { Log.e("Error", "Error retrieving response") })
-
-        queue.add(stringRequest)
+//        val queue = Volley.newRequestQueue(this)
+//        val url = URLs().foodURL
+//        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
+//            val i = Intent(applicationContext, Food::class.java)
+//            i.putExtra("FoodEntries", response)
+//            Log.i("Response", response.toString())
+//            startActivity(i)},
+//            { Log.e("Error", "Error retrieving response") })
+//
+//        queue.add(stringRequest)
+        val i = Intent(applicationContext, Food::class.java)
+        startActivity(i)
     }
 
     fun menu(view: View) {

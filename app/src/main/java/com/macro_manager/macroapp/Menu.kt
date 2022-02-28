@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.zxing.integration.android.IntentIntegrator
@@ -23,7 +22,7 @@ class Scan : AppCompatActivity()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.scan)
+        setContentView(R.layout.main_menu)
         title = "MacroManager"
         btnBarcode = findViewById<Button>(R.id.btnScan)
         btnBarcode.setOnClickListener {

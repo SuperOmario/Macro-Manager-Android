@@ -17,7 +17,7 @@ import org.json.JSONObject
 
 // taken from https://www.tutorialspoint.com/barcode-scanning-in-android-using-kotlin
 //allows barcode scanning
-class Scan : AppCompatActivity()  {
+class Menu : AppCompatActivity()  {
     lateinit var btnBarcode: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +26,7 @@ class Scan : AppCompatActivity()  {
         title = "MacroManager"
         btnBarcode = findViewById<Button>(R.id.btnScan)
         btnBarcode.setOnClickListener {
-            val intentIntegrator = IntentIntegrator(this@Scan)
+            val intentIntegrator = IntentIntegrator(this@Menu)
             intentIntegrator.setCaptureActivity(AnyOrientationCaptureActivity::class.java)
             intentIntegrator.setOrientationLocked(false)
             intentIntegrator.setBeepEnabled(false)
@@ -63,17 +63,15 @@ class Scan : AppCompatActivity()  {
         val stringRequest = StringRequest(
             Request.Method.POST, url,
             { response ->
-                //Display the first 500 characters of the response string.
-                //response.substring was causing crashes, must figure out why
                 Log.d("Response", "Response is: $response")
                 val intent = Intent(this, foodDetails::class.java)
                 val food = JSONObject(response)
                 intent.putExtra("title", food.getString("product_name"))
-                intent.putExtra("calories", food.getJSONObject("nutriments").getInt("energy-kcal_100g"))
-                intent.putExtra("carbs", food.getJSONObject("nutriments").getInt("carbohydrates_100g"))
-                intent.putExtra("fat", food.getJSONObject("nutriments").getInt("fat_100g"))
-                intent.putExtra("protein", food.getJSONObject("nutriments").getInt("proteins_100g"))
-                intent.putExtra("id", food.getInt("IngredientID"))
+                intent.putExtra("calories", food.getJSONObject("nutriments").getString("energy-kcal_100g"))
+                intent.putExtra("carbs", food.getJSONObject("nutriments").getString("carbohydrates_100g"))
+                intent.putExtra("fat", food.getJSONObject("nutriments").getString("fat_100g"))
+                intent.putExtra("protein", food.getJSONObject("nutriments").getString("proteins_100g"))
+                intent.putExtra("id", food.getString("IngredientID"))
                 intent.putExtra("servingSize", food.getString("serving_quantity"))
                 this.startActivity(intent)
             },

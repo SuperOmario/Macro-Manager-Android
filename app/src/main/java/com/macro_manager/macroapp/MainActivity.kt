@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun signIn(view: View) {
-        val i = Intent(applicationContext, Scan::class.java)
+        val i = Intent(applicationContext, Menu::class.java)
         startActivity(i)
     }
 }

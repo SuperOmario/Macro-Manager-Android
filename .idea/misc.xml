@@ -13,8 +13,10 @@
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/diarytest.xml" value="0.25" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/food.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/food_row.xml" value="0.5" />
+        <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/ingredient_details.xml" value="0.23072916666666668" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/menu_scanner.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/recipe.xml" value="0.14629629629629629" />
+        <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/recipe_details.xml" value="0.23072916666666668" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/recipe_row.xml" value="0.5" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/restaurant_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Omar/AndroidStudioProjects/MacroApp/app/src/main/res/layout/restaurant_row.xml" value="0.36666666666666664" />

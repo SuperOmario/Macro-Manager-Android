@@ -62,6 +62,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                     intent.putExtra("protein", holder.proteinCount.getText());
                     intent.putExtra("id", holder.idText.getText());
                     intent.putExtra("servingSize", holder.serving.getText());
+                    intent.putExtra("recipe" , "recipe");
                     context.startActivity(intent);
                 }
             });

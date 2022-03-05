@@ -2,6 +2,9 @@ package com.macro_manager.macroapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,7 +60,25 @@ public class foodDetails extends AppCompatActivity {
 
 
         if (!getIntent().hasExtra("Custom Food")) {
-            if (getIntent().getStringExtra("barcode").equals("true")) {
+            if (getIntent().hasExtra("recipe")) {
+                calories.setFocusable(false);
+                carbs.setFocusable(false);
+                fat.setFocusable(false);
+                protein.setFocusable(false);
+                calories.setFocusableInTouchMode(false);
+                carbs.setFocusableInTouchMode(false);
+                fat.setFocusableInTouchMode(false);
+                protein.setFocusableInTouchMode(false);
+                update.setVisibility(View.INVISIBLE);
+                add.setVisibility(View.INVISIBLE);
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteRecipe(v);
+                    }
+                });
+            } else  {
+//                if (getIntent().getStringExtra("barcode").equals("true"))
                 calories.setFocusable(false);
                 carbs.setFocusable(false);
                 fat.setFocusable(false);
@@ -84,6 +105,13 @@ public class foodDetails extends AppCompatActivity {
                         }
                     }
                 });
+
+                add.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                       addIngredientDialog();
+                    }
+                });
             }
             getData();
             setData();
@@ -93,61 +121,7 @@ public class foodDetails extends AppCompatActivity {
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    JSONObject jsonBody = new JSONObject();
-                    try {
-                        jsonBody.put("userId", 1);
-                        jsonBody.put("title", title.getText());
-                        jsonBody.put("calories", Integer.parseInt(calories.getText().toString()));
-                        jsonBody.put("fat", Integer.parseInt(fat.getText().toString()));
-                        jsonBody.put("carbohydrate", Integer.parseInt(carbs.getText().toString()));
-                        jsonBody.put("protein", Integer.parseInt(protein.getText().toString()));
-                        jsonBody.put("serving_size", Integer.parseInt(servingSize.getText().toString()));
-                        final String mRequestBody = jsonBody.toString();
-
-                        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                        String url = new URLs().getFoodURL();
-                        StringRequest stringRequest = new StringRequest( Request.Method.POST, url, response -> {
-                            Intent i = new Intent(getApplicationContext(), Food.class);
-                            i.putExtra("id", response);
-                            Log.i("Response", response);
-                            startActivity(i);
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.e("Error", String.valueOf(error));
-                            }
-                        }) {
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/json; charset=utf-8";
-                            }
-
-                            @Override
-                            public byte[] getBody() throws AuthFailureError {
-                                try {
-                                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                                } catch (UnsupportedEncodingException uee) {
-                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                                    return null;
-                                }
-                            }
-
-                            @Override
-                            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                                String responseString = "";
-                                if (response != null) {
-                                    responseString = String.valueOf(response.statusCode);
-                                }
-                                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                            }
-                        };
-
-
-                        queue.add(stringRequest);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                    addCustom();
                 }
             });
         }
@@ -196,6 +170,27 @@ public class foodDetails extends AppCompatActivity {
         };
     }
 
+    public void deleteRecipe(View view) {
+        if (getIntent().hasExtra("id")) {
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = new URLs().getRecipeURL();
+            url += "/" + getIntent().getStringExtra("id");
+            StringRequest stringRequest = new StringRequest( Request.Method.DELETE, url, response -> {
+                Intent i = new Intent(getApplicationContext(), Recipe.class);
+                i.putExtra("id", response);
+                Log.i("Response", response);
+                startActivity(i);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("Error", String.valueOf(error));
+                }
+            });
+
+            queue.add(stringRequest);
+        }
+    }
+
     public void add(View view) {
 //        if (getIntent().hasExtra("id")) {
 //            RequestQueue queue = Volley.newRequestQueue(this);
@@ -217,6 +212,83 @@ public class foodDetails extends AppCompatActivity {
 //        };
     }
 
+    public void addCustom() {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("userId", 1);
+            jsonBody.put("title", title.getText());
+            jsonBody.put("calories", Integer.parseInt(calories.getText().toString()));
+            jsonBody.put("fat", Integer.parseInt(fat.getText().toString()));
+            jsonBody.put("carbohydrate", Integer.parseInt(carbs.getText().toString()));
+            jsonBody.put("protein", Integer.parseInt(protein.getText().toString()));
+            jsonBody.put("serving_size", Integer.parseInt(servingSize.getText().toString()));
+            final String mRequestBody = jsonBody.toString();
+
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = new URLs().getFoodURL();
+            StringRequest stringRequest = new StringRequest( Request.Method.POST, url, response -> {
+                Intent i = new Intent(getApplicationContext(), Food.class);
+                i.putExtra("id", response);
+                Log.i("Response", response);
+                startActivity(i);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("Error", String.valueOf(error));
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+
+
+            queue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void addIngredientDialog() {
+        AlertDialog.Builder addIngredientDialog = new AlertDialog.Builder(getApplicationContext());
+        addIngredientDialog.setTitle("Add Ingredient to Recipe");
+        addIngredientDialog.setMessage("Add to existing or new recipe?");
+        addIngredientDialog.setPositiveButton("New Recipe", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        addIngredientDialog.setNegativeButton("Existing Recipe", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        addIngredientDialog.create().show();
+    }
 
     //adapted from https://stackoverflow.com/questions/48424033/android-volley-post-request-with-json-object-in-body-and-getting-response-in-str
     public void update(View view) throws JSONException {

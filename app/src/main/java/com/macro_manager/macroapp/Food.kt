@@ -104,8 +104,6 @@ class Food : AppCompatActivity() {
         val stringRequest = StringRequest(
             Request.Method.POST, url,
             { response ->
-                //Display the first 500 characters of the response string.
-                //response.substring was causing crashes, must figure out why
                 Log.d("Response", "Response is: $response")
                 val intent = Intent(this, foodDetails::class.java)
                 val food = JSONObject(response)
@@ -118,7 +116,7 @@ class Food : AppCompatActivity() {
                 intent.putExtra("servingSize", food.getString("serving_quantity"))
                 this.startActivity(intent)
             },
-            { error ->  Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show() })
+            { error ->  Toast.makeText(this, "Could not find food with that barcode, please enter manually", Toast.LENGTH_LONG).show() })
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest)

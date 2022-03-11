@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 //This code is adapted from https://www.youtube.com/watch?v=18VcnYN5_LM&ab_channel=Stevdza-San
 
@@ -44,14 +44,19 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryViewHol
 
     @Override
     public void onBindViewHolder(@NonNull DiaryViewHolder holder, int position) {
-        try {
-            holder.titleText.setText(response.getJSONObject(position).getString("Date").substring(0,10));
-            holder.calCount.setText(String.valueOf(response.getJSONObject(position).getInt("Calories")));
-            holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getInt("Fat")));
-            holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getInt("Carbohydrate")));
-            holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getInt("Protein")));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (response != null) {
+            try {
+                holder.titleText.setText(response.getJSONObject(position).getString("Date").substring(0,10));
+                holder.calCount.setText(String.valueOf(response.getJSONObject(position).getInt("Calories")));
+                holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getInt("Fat")));
+                holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getInt("Carbohydrate")));
+                holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getInt("Protein")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            holder.mainLayout.setVisibility(View.INVISIBLE);
+            Toast.makeText(context.getApplicationContext(), "You have no diary entries, make some!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -78,8 +83,8 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryViewHol
             carbCount = itemView.findViewById(R.id.txtCarbCount);
             fatCount = itemView.findViewById(R.id.txtFatCount);
             proteinCount = itemView.findViewById(R.id.txtProteinCount);
-            idText = itemView.findViewById(R.id.txtID);
-            serving = itemView.findViewById(R.id.txtServing);
+            idText = itemView.findViewById(R.id.txtRecipeID);
+            serving = itemView.findViewById(R.id.txtServingSizeRecipe);
             mainLayout = itemView.findViewById(R.id.mainLayout);
         }
     }

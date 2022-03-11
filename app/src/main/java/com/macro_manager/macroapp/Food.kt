@@ -1,81 +1,59 @@
 package com.macro_manager.macroapp
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.zxing.integration.android.IntentIntegrator
 import com.journeyapps.barcodescanner.ScanIntentResult
-import org.json.JSONObject
 
-class Food : AppCompatActivity() {
+class dbView : AppCompatActivity() {
 
-    private var foodView : RecyclerView? = null
-    lateinit var btnBarcode: FloatingActionButton
+    lateinit var recyclerView: RecyclerView
+    lateinit var floatingActionButton: FloatingActionButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.food)
 
-        btnBarcode = findViewById(R.id.floatingActionButtonFood)
-        btnBarcode.setOnClickListener {
+        if (intent.hasExtra("Category")) {
+            when (intent.getStringExtra("Category")){
+                "Food" -> {val queue = Volley.newRequestQueue(this)
+                    recyclerView = findViewById(R.id.recyclerView)
+                    val stringRequest = Requests.Food.getFood(recyclerView)
+                    queue.add(stringRequest)
 
-            //adapted from https://www.youtube.com/watch?v=men8GB-7yM0&ab_channel=Stevdza-San
-            val foodDialog : AlertDialog.Builder = AlertDialog.Builder(this)
-            foodDialog.setTitle("Add New Food")
-            foodDialog.setMessage("Which option would you like?")
-            foodDialog.setPositiveButton("Scan Barcode") { _, _ ->
-                run {
-                    val intentIntegrator = IntentIntegrator(this@Food)
-                    intentIntegrator.setCaptureActivity(AnyOrientationCaptureActivity::class.java)
-                    intentIntegrator.setOrientationLocked(false)
-                    intentIntegrator.setBeepEnabled(false)
-                    intentIntegrator.setCameraId(0)
-                    intentIntegrator.setPrompt("SCAN")
-                    intentIntegrator.setBarcodeImageEnabled(false)
-                    intentIntegrator.initiateScan()
-
+                    floatingActionButton = findViewById(R.id.floatingActionButton)
+                    floatingActionButton.setOnClickListener {
+                        newFoodDialog()
+                        }
                 }
-            }
-            foodDialog.setNegativeButton("Custom Food") { _, _ ->
-                run {
-                    val intent = Intent(this, foodDetails::class.java)
-                    intent.putExtra("Custom Food", true)
-                    this.startActivity(intent)
-                }
-            }
+                "Recipe" -> {floatingActionButton = findViewById(R.id.floatingActionButton)
+                    floatingActionButton.setOnClickListener{
 
-            foodDialog.create().show()
+                    }
+                    recyclerView = findViewById(R.id.recyclerView)
 
+                    val queue = Volley.newRequestQueue(this)
+                    val stringRequest : StringRequest = Requests.Recipe.getRequest(recyclerView)
+                    queue.add(stringRequest)}
+                "Diary" -> {val queue = Volley.newRequestQueue(this)
+                    recyclerView = findViewById(R.id.recyclerView)
+                    val stringRequest = Requests.Diary.getDiaries(recyclerView)
 
-//            val intentIntegrator = IntentIntegrator(this@Food)
-//            intentIntegrator.setCaptureActivity(AnyOrientationCaptureActivity::class.java)
-//            intentIntegrator.setOrientationLocked(false)
-//            intentIntegrator.setBeepEnabled(false)
-//            intentIntegrator.setCameraId(0)
-//            intentIntegrator.setPrompt("SCAN")
-//            intentIntegrator.setBarcodeImageEnabled(false)
-//            intentIntegrator.initiateScan()
+                    queue.add(stringRequest)}
         }
 
-        val queue = Volley.newRequestQueue(this)
-        val url = URLs().foodURL
-        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
-            Log.i("Response", response.toString())
-            adapter(response)},
-            { Log.e("Error", "Error retrieving response") })
-        queue.add(stringRequest)
+
+        }
     }
     //  adapted from https://developer.android.com/training/volley/simple
     @SuppressLint("SetTextI18n")
@@ -96,36 +74,43 @@ class Food : AppCompatActivity() {
     }
 
     private fun scan (result : String) {
-        println(result)
         val queue = Volley.newRequestQueue(this)
-        val url = URLs().foodURL + "/" + result
+
 
         // Request a string response from the provided URL.
-        val stringRequest = StringRequest(
-            Request.Method.POST, url,
-            { response ->
-                Log.d("Response", "Response is: $response")
-                val intent = Intent(this, foodDetails::class.java)
-                val food = JSONObject(response)
-                intent.putExtra("title", food.getString("product_name"))
-                intent.putExtra("calories", food.getJSONObject("nutriments").getString("energy-kcal_100g"))
-                intent.putExtra("carbs", food.getJSONObject("nutriments").getString("carbohydrates_100g"))
-                intent.putExtra("fat", food.getJSONObject("nutriments").getString("fat_100g"))
-                intent.putExtra("protein", food.getJSONObject("nutriments").getString("proteins_100g"))
-                intent.putExtra("id", food.getString("IngredientID"))
-                intent.putExtra("servingSize", food.getString("serving_quantity"))
-                this.startActivity(intent)
-            },
-            { error ->  Toast.makeText(this, "Could not find food with that barcode, please enter manually", Toast.LENGTH_LONG).show() })
+        val stringRequest = Requests.Food.postBarcode(result)
+
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest)
     }
 
-    private fun adapter(foodEntries : String) {
-        foodView = findViewById(R.id.foodRecyclerView)
+    fun newFoodDialog() {
+        //adapted from https://www.youtube.com/watch?v=men8GB-7yM0&ab_channel=Stevdza-San
+        val foodDialog : AlertDialog.Builder = AlertDialog.Builder(this)
+        foodDialog.setTitle("Add New Food")
+        foodDialog.setMessage("Which option would you like?")
+        foodDialog.setPositiveButton("Scan Barcode") { _, _ ->
+            run {
+                val intentIntegrator = IntentIntegrator(this@dbView)
+                intentIntegrator.setCaptureActivity(AnyOrientationCaptureActivity::class.java)
+                intentIntegrator.setOrientationLocked(false)
+                intentIntegrator.setBeepEnabled(false)
+                intentIntegrator.setCameraId(0)
+                intentIntegrator.setPrompt("SCAN")
+                intentIntegrator.setBarcodeImageEnabled(false)
+                intentIntegrator.initiateScan()
 
-        foodView?.adapter = FoodAdapter(this, foodEntries)
-        foodView?.layoutManager = LinearLayoutManager(this)
+            }
+        }
+        foodDialog.setNegativeButton("Custom Food") { _, _ ->
+            run {
+                val intent = Intent(this, Details::class.java)
+                intent.putExtra("Custom Food", true)
+                this.startActivity(intent)
+            }
+        }
+
+        foodDialog.create().show()
     }
 }

@@ -64,10 +64,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                     holder.titleText.setText(response.getJSONObject(position).getString("Title"));
                     holder.idText.setText(response.getJSONObject(position).getString("RecipeID"));
                     holder.serving.setText(response.getJSONObject(position).getString("ServingSize"));
-                    holder.calCount.setText(String.valueOf(response.getJSONObject(position).getString("Calories")));
-                    holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getString("Carbohydrate")));
-                    holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getString("Fat")));
-                    holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getString("Protein")));
+                    holder.calCount.setText(String.valueOf(response.getJSONObject(position).getInt("Calories")));
+                    holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getInt("Carbohydrate")));
+                    holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getInt("Fat")));
+                    holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getInt("Protein")));
                     holder.idText.setText(response.getJSONObject(position).getString("RecipeID"));
                     holder.serving.setText(response.getJSONObject(position).getString("ServingSize"));
                     switch (category) {
@@ -96,10 +96,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                             });
                             break;
                         default :
-                            holder.calCount.setText(String.valueOf(response.getJSONObject(position).getString("Calories")));
-                            holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getString("Carbohydrate")));
-                            holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getString("Fat")));
-                            holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getString("Protein")));
+                            holder.calCount.setText(String.valueOf(response.getJSONObject(position).getInt("Calories")));
+                            holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getInt("Carbohydrate")));
+                            holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getInt("Fat")));
+                            holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getInt("Protein")));
                             holder.idText.setText(response.getJSONObject(position).getString("RecipeID"));
                             holder.serving.setText(response.getJSONObject(position).getString("ServingSize"));
 

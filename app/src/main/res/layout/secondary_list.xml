@@ -32,7 +32,7 @@
                     android:text="g"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/txtServingSize"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewLunch" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout4"
@@ -66,7 +66,7 @@
                     android:minHeight="48dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewLunch"
                     tools:ignore="SpeakableTextPresentCheck" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -85,7 +85,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/recyclerViewLunch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -104,7 +104,19 @@
                     app:layout_constraintEnd_toStartOf="@+id/txtServingSize"
                     app:layout_constraintHorizontal_bias="0.761"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewLunch" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="210dp"
+                    android:layout_height="48dp"
+                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewLunch"
+                    android:entries="@array/mealtimes"
+                    tools:ignore="SpeakableTextPresentCheck"
+                    tools:visibility="invisible" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

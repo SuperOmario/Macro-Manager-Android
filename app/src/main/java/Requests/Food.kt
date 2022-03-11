@@ -49,6 +49,7 @@ class Food {
                     intent.putExtra("protein", food.getJSONObject("nutriments").getString("proteins_100g"))
                     intent.putExtra("id", food.getString("IngredientID"))
                     intent.putExtra("servingSize", food.getString("serving_quantity"))
+                    intent.putExtra("barcode", "true")
                     intent.flags = FLAG_ACTIVITY_NEW_TASK
                     context.startActivity(intent)
                 },

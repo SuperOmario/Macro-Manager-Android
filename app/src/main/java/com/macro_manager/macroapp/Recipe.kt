@@ -4,6 +4,7 @@ import Listeners.RecipeListener
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.StringRequest
@@ -29,7 +30,12 @@ class Recipe : AppCompatActivity(), RecipeListener {
                 "New" -> {
                     btnProceed.visibility = View.VISIBLE
 
-                    btnProceed.setOnClickListener { btnProceed(this.recipeIds, "New", intent.getStringExtra("ID").toString()) }
+                    btnProceed.setOnClickListener { try {
+                        if (!recipeIds.isNullOrEmpty()) btnProceed(recipeIds, "New", intent.getStringExtra("ID").toString())
+                        else Toast.makeText(this,"Please select a recipe", Toast.LENGTH_SHORT).show()
+                    } catch (e : UninitializedPropertyAccessException) {
+                        Toast.makeText(this,"Please select a recipe", Toast.LENGTH_SHORT).show()
+                    }}
                     floatingActionButton.visibility = View.INVISIBLE
                     diaryString = "New"
                 }
@@ -53,7 +59,7 @@ class Recipe : AppCompatActivity(), RecipeListener {
                 this.startActivity(i)
             }
         }
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.recyclerViewLunch)
 
         val queue = Volley.newRequestQueue(this)
         val stringRequest : StringRequest = Requests.Recipe.getRequest(recyclerView, diaryString, this)

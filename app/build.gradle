@@ -29,6 +29,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -59,4 +62,6 @@ dependencies {
 
 //  https://developers.google.com/maps/documentation/places/android-sdk/start
     implementation 'com.google.android.libraries.places:places:2.5.0'
+//  https://github.com/futuredapp/donut
+    implementation 'app.futured.donut:donut:2.2.1'
 }

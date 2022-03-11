@@ -19,23 +19,23 @@ import org.json.JSONObject
 // taken from https://www.tutorialspoint.com/barcode-scanning-in-android-using-kotlin
 //allows barcode scanning
 class Menu : AppCompatActivity()  {
-    lateinit var btnBarcode: Button
+//    lateinit var btnBarcode: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_menu)
         title = "MacroManager"
-        btnBarcode = findViewById<Button>(R.id.btnScan)
-        btnBarcode.setOnClickListener {
-            val intentIntegrator = IntentIntegrator(this@Menu)
-            intentIntegrator.setCaptureActivity(AnyOrientationCaptureActivity::class.java)
-            intentIntegrator.setOrientationLocked(false)
-            intentIntegrator.setBeepEnabled(false)
-            intentIntegrator.setCameraId(0)
-            intentIntegrator.setPrompt("SCAN")
-            intentIntegrator.setBarcodeImageEnabled(false)
-            intentIntegrator.initiateScan()
-        }
+//        btnBarcode = findViewById<Button>(R.id.btnScan)
+//        btnBarcode.setOnClickListener {
+//            val intentIntegrator = IntentIntegrator(this@Menu)
+//            intentIntegrator.setCaptureActivity(AnyOrientationCaptureActivity::class.java)
+//            intentIntegrator.setOrientationLocked(false)
+//            intentIntegrator.setBeepEnabled(false)
+//            intentIntegrator.setCameraId(0)
+//            intentIntegrator.setPrompt("SCAN")
+//            intentIntegrator.setBarcodeImageEnabled(false)
+//            intentIntegrator.initiateScan()
+//        }
     }
 //  adapted from https://developer.android.com/training/volley/simple
     @SuppressLint("SetTextI18n")

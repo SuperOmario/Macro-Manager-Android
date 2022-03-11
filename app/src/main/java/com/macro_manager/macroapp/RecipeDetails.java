@@ -41,7 +41,7 @@ public class RecipeDetails extends AppCompatActivity implements IngredientListen
         setContentView(R.layout.recipe_details);
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerViewLunch);
         StringRequest stringRequest = Recipe.Companion.getIngredientsRequest(recyclerView, getIntent().getStringExtra("id"), this);
         queue.add(stringRequest);
 

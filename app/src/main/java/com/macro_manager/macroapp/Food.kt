@@ -28,7 +28,7 @@ class Food : AppCompatActivity(), FoodListener {
         setContentView(R.layout.main_list)
         var recipeString : String = ""
         val queue = Volley.newRequestQueue(this)
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.recyclerViewLunch)
         floatingActionButton = findViewById(R.id.floatingActionButton)
         btnProceed = findViewById(R.id.fabProceed)
         if (intent.hasExtra("Recipe")) {
@@ -41,7 +41,12 @@ class Food : AppCompatActivity(), FoodListener {
                 }
                 "Update" -> {
                     btnProceed.visibility = View.VISIBLE;
-                    btnProceed.setOnClickListener { btnProceed(this.foodIds, "Update", intent.getStringExtra("ID").toString()) }
+                    btnProceed.setOnClickListener { try {
+                        if (!foodIds.isNullOrEmpty()) btnProceed(foodIds, "New", intent.getStringExtra("ID").toString())
+                        else Toast.makeText(this,"Please select a recipe", Toast.LENGTH_SHORT).show()
+                    } catch (e : UninitializedPropertyAccessException) {
+                        Toast.makeText(this,"Please select a recipe", Toast.LENGTH_SHORT).show()
+                    }}
                     recipeString = "Update"
                     floatingActionButton.visibility = View.INVISIBLE
                 }

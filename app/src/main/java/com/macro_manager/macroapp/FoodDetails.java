@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +31,15 @@ public class FoodDetails extends AppCompatActivity {
 
     Button delete, add, update;
 
+    Float calsNum=0F, carbsNum=0F, fatsNum=0F, proteinsNum = 0F;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_details);
+
+
 
         title = findViewById(R.id.title);
         calories = findViewById(R.id.calorieNumber);
@@ -42,6 +50,8 @@ public class FoodDetails extends AppCompatActivity {
 
         delete = findViewById(R.id.btnDelete);
         update = findViewById(R.id.btnUpdate);
+        add = findViewById(R.id.btnAdd);
+        add.setVisibility(View.INVISIBLE);
 
         title.setFocusable(true);
         title.setFocusableInTouchMode(true);
@@ -58,11 +68,59 @@ public class FoodDetails extends AppCompatActivity {
                     fat.setFocusableInTouchMode(false);
                     protein.setFocusableInTouchMode(false);
                 } else {
-                    calories.setFocusable(true);
+                    calories.setFocusable(false);
                     carbs.setFocusable(true);
+                    carbs.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            validateCalsCarbs();
+                        }
+                    });
                     fat.setFocusable(true);
+                    fat.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            validateCalsFats();
+                        }
+                    });
                     protein.setFocusable(true);
-                    calories.setFocusableInTouchMode(true);
+                    protein.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            validateCalsProtein();
+                        }
+                    });
+                    calories.setFocusableInTouchMode(false);
                     carbs.setFocusableInTouchMode(true);
                     fat.setFocusableInTouchMode(true);
                     protein.setFocusableInTouchMode(true);
@@ -87,8 +145,59 @@ public class FoodDetails extends AppCompatActivity {
             getData();
             setData();
         } else {
+            calories.setFocusable(false);
+            calories.setFocusableInTouchMode(false);
+            carbs.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    validateCalsCarbs();
+                }
+            });
+            protein.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    validateCalsProtein();
+                }
+            });
+            fat.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    validateCalsFats();
+                }
+            });
             delete.setVisibility(View.INVISIBLE);
             update.setVisibility(View.INVISIBLE);
+            add.setVisibility(View.VISIBLE);
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -129,6 +238,23 @@ public class FoodDetails extends AppCompatActivity {
         };
     }
 
+    public void validateCalsProtein() {
+        proteinsNum = Float.parseFloat(protein.getText().toString());
+        calsNum = (fatsNum * 9) + (carbsNum * 4) + (proteinsNum * 4);
+        calories.setText(calsNum.toString());
+    }
+
+    public void validateCalsCarbs() {
+        carbsNum = Float.parseFloat(carbs.getText().toString());
+        calsNum = (fatsNum * 9) + (carbsNum * 4) + (proteinsNum * 4);
+        calories.setText(calsNum.toString());
+    }
+    public void validateCalsFats() {
+        fatsNum = Float.parseFloat(fat.getText().toString());
+        calsNum = (fatsNum * 9) + (carbsNum * 4) + (proteinsNum * 4);
+        calories.setText(calsNum.toString());
+    }
+
 
 
     public void addCustom() {
@@ -136,11 +262,11 @@ public class FoodDetails extends AppCompatActivity {
         try {
             jsonBody.put("userId", 1);
             jsonBody.put("title", title.getText());
-            jsonBody.put("calories", Integer.parseInt(calories.getText().toString()));
-            jsonBody.put("fat", Integer.parseInt(fat.getText().toString()));
-            jsonBody.put("carbohydrate", Integer.parseInt(carbs.getText().toString()));
-            jsonBody.put("protein", Integer.parseInt(protein.getText().toString()));
-            jsonBody.put("serving_size", Integer.parseInt(servingSize.getText().toString()));
+            jsonBody.put("calories", Float.parseFloat(calories.getText().toString()));
+            jsonBody.put("fat", Float.parseFloat(fat.getText().toString()));
+            jsonBody.put("carbohydrate", Float.parseFloat(carbs.getText().toString()));
+            jsonBody.put("protein",Float.parseFloat(protein.getText().toString()));
+            jsonBody.put("serving_size", Float.parseFloat(servingSize.getText().toString()));
             final String mRequestBody = jsonBody.toString();
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());

@@ -114,6 +114,7 @@ class Recipe {
                     i.putExtra("Category", "Recipe")
                     i.putExtra("id", response)
                     Log.i("Response", response!!)
+                    i.flags = FLAG_ACTIVITY_NEW_TASK
                     MainApplication.applicationContext().startActivity(i)
                 }
             ) { error -> Log.e("Error", error.toString()) }
@@ -295,6 +296,7 @@ class Recipe {
         private fun diaryRecipeAdapter(recipeEntries: JSONArray, recipeView: RecyclerView, diaryRecipeListener: DiaryRecipeListener) {
             var context : Context = MainApplication.applicationContext()
             recipeView.adapter = DiaryRecipeAdapter(context, recipeEntries, diaryRecipeListener)
+            recipeView.layoutManager = LinearLayoutManager(context)
         }
     }
 

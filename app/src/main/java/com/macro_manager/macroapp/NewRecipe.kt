@@ -4,7 +4,10 @@ import Listeners.IngredientListener
 import Models.Ingredient
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -20,10 +23,14 @@ class NewRecipe : AppCompatActivity(), IngredientListener {
     lateinit var txtTitle : TextView
     lateinit var txtServingSize : TextView
     private var ingredients = java.util.HashMap<Int, Float>()
+    lateinit var  spinner : Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.secondary_list)
+        spinner = findViewById<Spinner>(R.id.spinner)
+        spinner.visibility = View.INVISIBLE
+
 
         txtTitle = findViewById(R.id.txtTitle)
         txtServingSize = findViewById(R.id.txtServingSize)
@@ -34,9 +41,10 @@ class NewRecipe : AppCompatActivity(), IngredientListener {
         var foodIDs : ArrayList<Int> = ArrayList()
         val queue = Volley.newRequestQueue(this)
 
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.recyclerViewLunch)
         btnProceed = findViewById(R.id.fabProceed2)
-        btnProceed.setOnClickListener { createRecipe(ingredients) }
+        btnProceed.setOnClickListener { try { if (txtTitle.text.toString() != "" || !ingredients.isNullOrEmpty()) { createRecipe(ingredients) } }
+        catch (e : UninitializedPropertyAccessException){ Toast.makeText(this,"Please fill out the page", Toast.LENGTH_SHORT).show()}}
         if (intent.hasExtra("Recipe")) {
             foodIDs = intent.getIntegerArrayListExtra("IDs") as ArrayList<Int>
         }

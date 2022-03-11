@@ -1,6 +1,7 @@
 package Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.macro_manager.macroapp.DiaryEntries;
+import com.macro_manager.macroapp.MainApplication;
 import com.macro_manager.macroapp.R;
 
 import org.json.JSONArray;
@@ -53,6 +56,19 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.DiaryViewHol
                 holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getInt("Fat")));
                 holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getInt("Carbohydrate")));
                 holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getInt("Protein")));
+                holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, DiaryEntries.class);
+                        i.putExtra("Date", holder.titleText.getText().toString());
+                        i.putExtra("Calories", holder.calCount.getText().toString());
+                        i.putExtra("Fat", holder.fatCount.getText().toString());
+                        i.putExtra("Carbohydrate", holder.carbCount.getText().toString());
+                        i.putExtra("Protein", holder.proteinCount.getText().toString());
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }

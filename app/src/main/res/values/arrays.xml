@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mealtimes">
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Morning Snack</item>
+        <item>Afternoon Snack</item>
+        <item>Evening Snack</item>
+    </string-array>
+</resources>

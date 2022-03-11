@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     JSONArray response;
     Context context;
     IngredientListener ingredientListener;
+    Spinner spinner;
 
     HashMap<Integer, Float> ingredients = new HashMap<>();
     ArrayList<Ingredient> ingredients2 = new ArrayList<>();
@@ -80,6 +82,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                     holder.serving.setText("Serving size: 100" );
                 }
                 ingredients.put(response.getJSONObject(position).getInt("IngredientID"), 0.00F);
+                ingredients2.add(new Ingredient(0, 0, 0, 0));
             }
 
 
@@ -105,8 +108,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                         ingredients.put(response.getJSONObject(position).getInt("IngredientID"), Float.parseFloat( holder.servings.getText().toString().replace("Servings: ", "")));
                         if (response.getJSONObject(position).has("RecipeIngredientID")) {
                             Ingredient ingredient = new Ingredient(response.getJSONObject(position).getInt("RecipeIngredientID"), response.getJSONObject(position).getInt("IngredientID"), Float.parseFloat(holder.servings.getText().toString().replace("Servings: ", "")), Double.parseDouble(holder.amount.getText().toString()) );
-
-                            ingredients2.set(position, ingredient);
+                            try {
+                                ingredients2.set(position, ingredient);
+                            } catch (IndexOutOfBoundsException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             Ingredient ingredient = new Ingredient(0, response.getJSONObject(position).getInt("IngredientID"), Float.parseFloat(holder.servings.getText().toString().replace("Servings: ", "")), Double.parseDouble(holder.amount.getText().toString()));
 

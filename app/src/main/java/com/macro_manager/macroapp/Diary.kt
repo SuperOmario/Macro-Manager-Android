@@ -1,19 +1,13 @@
 package com.macro_manager.macroapp
 
-import android.app.DatePickerDialog
 import android.app.DatePickerDialog.*
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.DatePicker
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.zxing.integration.android.IntentIntegrator
-import java.text.DateFormat
 import java.util.*
 
 class Diary : AppCompatActivity() {
@@ -32,7 +26,7 @@ class Diary : AppCompatActivity() {
         btnAdd.setOnClickListener { addDiaryEntry() }
 
         val queue = Volley.newRequestQueue(this)
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.recyclerViewLunch)
         val stringRequest = Requests.Diary.getDiaries(recyclerView)
 
         queue.add(stringRequest)

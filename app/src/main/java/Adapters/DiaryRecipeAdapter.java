@@ -62,19 +62,20 @@ public class DiaryRecipeAdapter extends RecyclerView.Adapter<DiaryRecipeAdapter.
                     holder.serving.setText("Serving size: 100" );
                 }
                 DecimalFormat df = new DecimalFormat("0.00");
-                holder.servings.setText("Servings: " + response.getJSONObject(position).getString("Servings"));
-                holder.amount.setText(df.format (Double.parseDouble(holder.serving.getText().toString().replace("Serving size: ", "")) * Double.parseDouble(holder.servings.getText().toString().replace("Servings: ", ""))));
+//                holder.servings.setText("Servings: " + response.getJSONObject(position).getString("Servings"));
+//                holder.amount.setText(df.format (Double.parseDouble(holder.serving.getText().toString().replace("Serving size: ", "")) * Double.parseDouble(holder.servings.getText().toString().replace("Servings: ", ""))));
 
-            } else {
-                holder.titleText.setText(response.getJSONObject(position).getString("product_name"));
-                holder.idText.setText(String.valueOf(response.getJSONObject(position).getInt("IngredientID")));
-                String servingSize = response.getJSONObject(position).getString("serving_quantity");
-                if (!servingSize.equals("0")) {
-                    holder.serving.setText("Serving size: " + servingSize);
-                } else {
-                    holder.serving.setText("Serving size: 100" );
-                }
             }
+//            else {
+//                holder.titleText.setText(response.getJSONObject(position).getString("product_name"));
+//                holder.idText.setText(String.valueOf(response.getJSONObject(position).getInt("IngredientID")));
+//                String servingSize = response.getJSONObject(position).getString("serving_quantity");
+//                if (!servingSize.equals("0")) {
+//                    holder.serving.setText("Serving size: " + servingSize);
+//                } else {
+//                    holder.serving.setText("Serving size: 100" );
+//                }
+//            }
 
 
 
@@ -96,11 +97,7 @@ public class DiaryRecipeAdapter extends RecyclerView.Adapter<DiaryRecipeAdapter.
                         double newInt = Double.parseDouble(string);
                         DecimalFormat df = new DecimalFormat("0.00");
                         holder.servings.setText(new StringBuilder().append("Servings: ").append(df.format(Double.parseDouble(holder.amount.getText().toString()) / newInt)).toString());
-                        if (response.getJSONObject(position).has("RecipeIngredientID")) {
-
-                        } else {
-
-                        }
+                        recipes.put(response.getJSONObject(position).getInt("RecipeID"), Float.parseFloat( holder.servings.getText().toString().replace("Servings: ", "")));
                         diaryRecipeListener.onRecipeChange(recipes);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -127,8 +124,7 @@ public class DiaryRecipeAdapter extends RecyclerView.Adapter<DiaryRecipeAdapter.
         if (response != null) {
             base(holder, position);
         } else {
-            holder.mainLayout.setVisibility((View.INVISIBLE));
-            Toast.makeText(context.getApplicationContext(), "You have no food entries, make some!", Toast.LENGTH_SHORT).show();
+
         }
 
     }

@@ -1,4 +1,4 @@
-package com.macro_manager.macroapp;
+package Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.macro_manager.macroapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

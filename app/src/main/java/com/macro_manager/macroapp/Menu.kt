@@ -1,5 +1,6 @@
 package com.macro_manager.macroapp
 
+import Requests.URLs
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -64,7 +65,7 @@ class Menu : AppCompatActivity()  {
             Request.Method.POST, url,
             { response ->
                 Log.d("Response", "Response is: $response")
-                val intent = Intent(this, foodDetails::class.java)
+                val intent = Intent(this, FoodDetails::class.java)
                 val food = JSONObject(response)
                 intent.putExtra("title", food.getString("product_name"))
                 intent.putExtra("calories", food.getJSONObject("nutriments").getString("energy-kcal_100g"))
@@ -82,52 +83,28 @@ class Menu : AppCompatActivity()  {
     }
 
     fun diary(view: View) {
-        val queue = Volley.newRequestQueue(this)
-        val url = URLs().diaryURL
-        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
-            val i = Intent(applicationContext, Diary::class.java)
-            i.putExtra("DiaryEntries", response)
-            Log.i("Response", response.toString())
-            startActivity(i)},
-            { Log.e("Error", "Error retrieving response") })
-
-        queue.add(stringRequest)
+        val i = Intent(applicationContext, Diary::class.java)
+        i.putExtra("Category", "Diary")
+        startActivity(i)
 
     }
 
     fun recipe(view: View) {
-//        val queue = Volley.newRequestQueue(this)
-//        val url = URLs().recipeURL
-//        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
-//            val i = Intent(applicationContext, Recipe::class.java)
-//            i.putExtra("RecipeEntries", response)
-//            Log.i("Response", response.toString())
-//            startActivity(i)},
-//            { Log.e("Error", "Error retrieving response") })
-//
-//        queue.add(stringRequest)
         val i = Intent(applicationContext, Recipe::class.java)
         startActivity(i)
     }
 
     fun food(view: View) {
-//        val queue = Volley.newRequestQueue(this)
-//        val url = URLs().foodURL
-//        val stringRequest =  StringRequest( Request.Method.GET, url, { response ->
-//            val i = Intent(applicationContext, Food::class.java)
-//            i.putExtra("FoodEntries", response)
-//            Log.i("Response", response.toString())
-//            startActivity(i)},
-//            { Log.e("Error", "Error retrieving response") })
-//
-//        queue.add(stringRequest)
         val i = Intent(applicationContext, Food::class.java)
         startActivity(i)
     }
 
-    fun menu(view: View) {
-        val i = Intent(applicationContext, MenuScanner::class.java)
-        startActivity(i)
-    }
-
 }
+
+
+
+//
+//    fun menu(view: View) {
+//        val i = Intent(applicationContext, MenuScanner::class.java)
+//        startActivity(i)
+//    }

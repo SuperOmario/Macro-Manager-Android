@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.macro_manager.macroapp">
+    package="com.macro_manager.macroapp" >
     <!--
           from https://www.tutorialspoint.com/barcode-scanning-in-android-using-kotlin
         requests permission to use camera
@@ -14,38 +14,38 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MacroApp">
+        android:theme="@style/Theme.MacroApp" >
+        <activity android:name=".RecipeDetails"
+            android:parentActivityName=".Recipe"></activity>
         <activity
-            android:name=".IngredientDetails"
+            android:name=".NewRecipe"
             android:exported="false" />
         <activity
-            android:name=".recipe_detail"
-            android:exported="false"
-            android:parentActivityName=".Recipe" />
-        <activity
-            android:name=".foodDetails"
+            android:name=".FoodDetails"
             android:exported="false"
             android:parentActivityName=".Food" />
         <activity
-            android:name=".Diary"
+            android:name=".Food"
             android:exported="false"
-            android:parentActivityName=".Menu"/>
+            android:parentActivityName=".Menu" />
         <activity
             android:name=".Recipe"
             android:exported="false"
-            android:parentActivityName=".Menu"/>
+            android:parentActivityName=".Menu" />
         <activity
-            android:name=".Food"
+            android:name=".Diary"
             android:exported="false"
-            android:parentActivityName=".Menu"/>
+            android:parentActivityName=".Menu" />
         <activity
-            android:name=".MenuScanner"
-            android:exported="false" />
+            android:name=".NewDiaryEntry"
+            android:exported="false"
+            android:parentActivityName=".Diary"/>
         <activity
             android:name=".AnyOrientationCaptureActivity"
             android:screenOrientation="fullSensor"
@@ -54,16 +54,17 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false" >
         </activity>
         <activity
             android:name=".Menu"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="fullSensor"
+            android:exported="true"><intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
     </application>
 
 </manifest>

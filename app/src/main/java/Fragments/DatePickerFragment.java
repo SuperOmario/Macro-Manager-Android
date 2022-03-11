@@ -1,4 +1,4 @@
-package com.macro_manager.macroapp;
+package Fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

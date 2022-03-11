@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 import Requests.Recipe;
 
-public class Details extends AppCompatActivity {
+public class FoodDetails extends AppCompatActivity {
 
     TextView title, calories, carbs, fat, protein, servingSize;
 
@@ -41,7 +41,6 @@ public class Details extends AppCompatActivity {
         servingSize = findViewById(R.id.servingSizeNumber);
 
         delete = findViewById(R.id.btnDelete);
-        add = findViewById(R.id.btnAdd);
         update = findViewById(R.id.btnUpdate);
 
         title.setFocusable(true);
@@ -49,60 +48,42 @@ public class Details extends AppCompatActivity {
 
 
         if (!getIntent().hasExtra("Custom Food")) {
-            if (getIntent().hasExtra("recipe")) {
-                calories.setFocusable(false);
-                carbs.setFocusable(false);
-                fat.setFocusable(false);
-                protein.setFocusable(false);
-                calories.setFocusableInTouchMode(false);
-                carbs.setFocusableInTouchMode(false);
-                fat.setFocusableInTouchMode(false);
-                protein.setFocusableInTouchMode(false);
-                update.setVisibility(View.INVISIBLE);
-                add.setVisibility(View.INVISIBLE);
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteRecipe(v);
-                    }
-                });
-            } else  {
-//                if (getIntent().getStringExtra("barcode").equals("true"))
-                calories.setFocusable(false);
-                carbs.setFocusable(false);
-                fat.setFocusable(false);
-                protein.setFocusable(false);
-                calories.setFocusableInTouchMode(false);
-                carbs.setFocusableInTouchMode(false);
-                fat.setFocusableInTouchMode(false);
-                protein.setFocusableInTouchMode(false);
-                add.setVisibility(View.INVISIBLE);
+                if (getIntent().getStringExtra("barcode").equals("true")) {
+                    calories.setFocusable(false);
+                    carbs.setFocusable(false);
+                    fat.setFocusable(false);
+                    protein.setFocusable(false);
+                    calories.setFocusableInTouchMode(false);
+                    carbs.setFocusableInTouchMode(false);
+                    fat.setFocusableInTouchMode(false);
+                    protein.setFocusableInTouchMode(false);
+                } else {
+                    calories.setFocusable(true);
+                    carbs.setFocusable(true);
+                    fat.setFocusable(true);
+                    protein.setFocusable(true);
+                    calories.setFocusableInTouchMode(true);
+                    carbs.setFocusableInTouchMode(true);
+                    fat.setFocusableInTouchMode(true);
+                    protein.setFocusableInTouchMode(true);
+                }
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteFood(v);
+                }
+            });
 
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteFood(v);
+            update.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        update(v);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
-
-                update.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            update(v);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-//                add.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                       addIngredientDialog();
-//                    }
-//                });
-            }
+                }
+            });
             getData();
             setData();
         } else {
@@ -148,35 +129,7 @@ public class Details extends AppCompatActivity {
         };
     }
 
-    public void deleteRecipe(View view) {
-        if (getIntent().hasExtra("id")) {
-            RequestQueue queue = Volley.newRequestQueue(this);
-            StringRequest stringRequest = Recipe.Companion.deleteRequest(getIntent().getStringExtra("id"));
 
-            queue.add(stringRequest);
-        }
-    }
-
-//    public void addIngredient(View view) {
-//        if (getIntent().hasExtra("id")) {
-//            RequestQueue queue = Volley.newRequestQueue(this);
-//            String url = new URLs().getFoodURL();
-//            url += "/" + getIntent().getStringExtra("id");
-//            StringRequest stringRequest = new StringRequest( Request.Method.DELETE, url, response -> {
-//                Intent i = new Intent(getApplicationContext(), Food.class);
-//                i.putExtra("id", response);
-//                Log.i("Response", response);
-//                startActivity(i);
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    Log.e("Error", String.valueOf(error));
-//                }
-//            });
-//
-//            queue.add(stringRequest);
-//        };
-//    }
 
     public void addCustom() {
         JSONObject jsonBody = new JSONObject();
@@ -199,26 +152,6 @@ public class Details extends AppCompatActivity {
         }
     }
 
-
-//    public void addIngredientDialog() {
-//        AlertDialog.Builder addIngredientDialog = new AlertDialog.Builder(getApplicationContext());
-//        addIngredientDialog.setTitle("Add Ingredient to Recipe");
-//        addIngredientDialog.setMessage("Add to existing or new recipe?");
-//        addIngredientDialog.setPositiveButton("New Recipe", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        });
-//        addIngredientDialog.setNegativeButton("Existing Recipe", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        });
-//
-//        addIngredientDialog.create().show();
-//    }
 
     //adapted from https://stackoverflow.com/questions/48424033/android-volley-post-request-with-json-object-in-body-and-getting-response-in-str
     public void update(View view) throws JSONException {

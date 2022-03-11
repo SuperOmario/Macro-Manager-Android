@@ -1,4 +1,4 @@
-package com.macro_manager.macroapp
+package Listeners
 
 interface FoodListener {
     fun onFoodChange(arrayList: ArrayList<Int>) {

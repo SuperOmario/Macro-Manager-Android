@@ -1,4 +1,4 @@
-package com.macro_manager.macroapp;
+package Adapters;
 
 //This code is adapted from https://www.youtube.com/watch?v=18VcnYN5_LM&ab_channel=Stevdza-San
 
@@ -15,6 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import Listeners.IngredientListener;
+import com.macro_manager.macroapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

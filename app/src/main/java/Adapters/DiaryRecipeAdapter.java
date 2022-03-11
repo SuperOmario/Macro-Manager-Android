@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import Listeners.IngredientListener;
 import com.macro_manager.macroapp.R;
 
 import org.json.JSONArray;
@@ -26,18 +25,19 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import Listeners.DiaryRecipeListener;
+import Listeners.IngredientListener;
 import Models.Ingredient;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>{
+public class DiaryRecipeAdapter extends RecyclerView.Adapter<DiaryRecipeAdapter.DiaryRecipeViewHolder>{
 
     JSONArray response;
     Context context;
-    IngredientListener ingredientListener;
+    DiaryRecipeListener diaryRecipeListener;
 
-    HashMap<Integer, Float> ingredients = new HashMap<>();
-    ArrayList<Ingredient> ingredients2 = new ArrayList<>();
+    HashMap<Integer, Float> recipes = new HashMap<>();
 
-    public IngredientAdapter(Context ct, JSONArray response, IngredientListener ingredientListener) {
+    public DiaryRecipeAdapter(Context ct, JSONArray response, DiaryRecipeListener diaryRecipeListener) {
         try {
             System.out.println(response);
             this.response = response;
@@ -46,17 +46,16 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             e.printStackTrace();
         }
         context = ct;
-        this.ingredientListener = ingredientListener;
+        this.diaryRecipeListener = diaryRecipeListener;
         System.out.println(response);
     }
 
     @SuppressLint("SetTextI18n")
-    private void base(IngredientViewHolder holder, int position) {
+    private void base(DiaryRecipeViewHolder holder, int position) {
         try {
             if (response.getJSONObject(position).has("Title")) {
                 holder.titleText.setText(response.getJSONObject(position).getString("Title"));
-                holder.idText.setText(String.valueOf(response.getJSONObject(position).getInt("IngredientID")));
-                holder.ingredientIDText.setText(String.valueOf(response.getJSONObject(position).getInt("RecipeIngredientID")));
+                holder.idText.setText(String.valueOf(response.getJSONObject(position).getInt("RecipeID")));
                 String servingSize = response.getJSONObject(position).getString("ServingSize");
                 if (!servingSize.equals("0")) holder.serving.setText("Serving size: " + servingSize);
                 else {
@@ -66,10 +65,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 holder.servings.setText("Servings: " + response.getJSONObject(position).getString("Servings"));
                 holder.amount.setText(df.format (Double.parseDouble(holder.serving.getText().toString().replace("Serving size: ", "")) * Double.parseDouble(holder.servings.getText().toString().replace("Servings: ", ""))));
 
-                Ingredient ingredient = new Ingredient(response.getJSONObject(position).getInt("RecipeIngredientID"), response.getJSONObject(position).getInt("IngredientID"), Float.parseFloat(holder.servings.getText().toString().replace("Servings: ", "")), Double.parseDouble(holder.amount.getText().toString()));
-
-                ingredients2.add(ingredient);
-                ingredients.put(response.getJSONObject(position).getInt("IngredientID"),  Float.parseFloat(holder.servings.getText().toString().replace("Servings: ", "")));
             } else {
                 holder.titleText.setText(response.getJSONObject(position).getString("product_name"));
                 holder.idText.setText(String.valueOf(response.getJSONObject(position).getInt("IngredientID")));
@@ -79,7 +74,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 } else {
                     holder.serving.setText("Serving size: 100" );
                 }
-                ingredients.put(response.getJSONObject(position).getInt("IngredientID"), 0.00F);
             }
 
 
@@ -102,17 +96,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                         double newInt = Double.parseDouble(string);
                         DecimalFormat df = new DecimalFormat("0.00");
                         holder.servings.setText(new StringBuilder().append("Servings: ").append(df.format(Double.parseDouble(holder.amount.getText().toString()) / newInt)).toString());
-                        ingredients.put(response.getJSONObject(position).getInt("IngredientID"), Float.parseFloat( holder.servings.getText().toString().replace("Servings: ", "")));
                         if (response.getJSONObject(position).has("RecipeIngredientID")) {
-                            Ingredient ingredient = new Ingredient(response.getJSONObject(position).getInt("RecipeIngredientID"), response.getJSONObject(position).getInt("IngredientID"), Float.parseFloat(holder.servings.getText().toString().replace("Servings: ", "")), Double.parseDouble(holder.amount.getText().toString()) );
 
-                            ingredients2.set(position, ingredient);
                         } else {
-                            Ingredient ingredient = new Ingredient(0, response.getJSONObject(position).getInt("IngredientID"), Float.parseFloat(holder.servings.getText().toString().replace("Servings: ", "")), Double.parseDouble(holder.amount.getText().toString()));
 
-                            ingredients2.set(position, ingredient);
                         }
-                        ingredientListener.onServingChange(ingredients, ingredients2);
+                        diaryRecipeListener.onRecipeChange(recipes);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (NumberFormatException e) {
@@ -127,14 +116,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @NonNull
     @Override
-    public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DiaryRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.ingredient_row,parent,false);
-        return new IngredientAdapter.IngredientViewHolder(view);
+        return new DiaryRecipeAdapter.DiaryRecipeViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DiaryRecipeViewHolder holder, int position) {
         if (response != null) {
             base(holder, position);
         } else {
@@ -154,16 +143,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         }
     }
 
-    public class IngredientViewHolder extends RecyclerView.ViewHolder {
+    public class DiaryRecipeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView titleText, idText, ingredientIDText, serving, servings, amount;
+        TextView titleText, idText, serving, servings, amount;
         ConstraintLayout mainLayout;
 
-        public IngredientViewHolder(@NonNull View itemView) {
+        public DiaryRecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             titleText = itemView.findViewById(R.id.txtTitle);
             idText = itemView.findViewById(R.id.txtRecipeID);
-            ingredientIDText = itemView.findViewById(R.id.txtRecipeIngredientID);
             serving = itemView.findViewById(R.id.txtServingSizeRecipe);
             servings = itemView.findViewById(R.id.txtServings);
             amount = itemView.findViewById(R.id.txtAmount);

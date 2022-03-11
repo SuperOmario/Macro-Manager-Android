@@ -1,21 +1,18 @@
 package com.macro_manager.macroapp
 
+import Listeners.IngredientListener
 import Models.Ingredient
-import Requests.Food.Companion.customFood
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class SecondaryList : AppCompatActivity(), IngredientListener {
+class NewRecipe : AppCompatActivity(), IngredientListener {
 
     private lateinit var amounts: ArrayList<Ingredient>
     lateinit var recyclerView: RecyclerView

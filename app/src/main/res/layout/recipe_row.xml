@@ -17,6 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="128dp">
 
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="33dp"
+                android:layout_height="45dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/txtProteinCount"
                 android:layout_width="wrap_content"
@@ -126,7 +135,7 @@
                 app:layout_constraintVertical_bias="0.169" />
 
             <TextView
-                android:id="@+id/txtServing"
+                android:id="@+id/txtServingSizeRecipe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -135,13 +144,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/txtID"
+                android:id="@+id/txtRecipeID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtServing" />
+                app:layout_constraintTop_toBottomOf="@+id/txtServingSizeRecipe" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

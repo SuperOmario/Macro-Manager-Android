@@ -126,7 +126,7 @@
                 card_view:layout_constraintVertical_bias="0.169" />
 
             <TextView
-                android:id="@+id/txtServing"
+                android:id="@+id/txtServingSizeRecipe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -135,13 +135,13 @@
                 card_view:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/txtID"
+                android:id="@+id/txtRecipeID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:visibility="invisible"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintTop_toBottomOf="@+id/txtServing" />
+                card_view:layout_constraintTop_toBottomOf="@+id/txtServingSizeRecipe" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

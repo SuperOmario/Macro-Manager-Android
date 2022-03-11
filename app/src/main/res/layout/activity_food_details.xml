@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".foodDetails">
+    tools:context=".FoodDetails">
 
     <TextView
         android:id="@+id/servingSizeTitle"
@@ -162,19 +162,6 @@
         app:layout_constraintTop_toBottomOf="@+id/servingSizeNumber" />
 
     <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:text="Add"
-        android:onClick="add"
-        app:layout_constraintEnd_toStartOf="@+id/btnUpdate"
-        app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintStart_toEndOf="@+id/btnDelete"
-        app:layout_constraintTop_toBottomOf="@+id/servingSizeNumber" />
-
-    <Button
         android:id="@+id/btnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -182,7 +169,7 @@
         android:backgroundTint="#ED0707"
         android:backgroundTintMode="add"
         android:text="Delete"
-        android:onClick="delete"
+        android:onClick="deleteFood"
         app:iconTint="#D51212"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.18"

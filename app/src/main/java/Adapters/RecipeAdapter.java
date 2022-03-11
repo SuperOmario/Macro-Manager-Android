@@ -1,5 +1,6 @@
-package com.macro_manager.macroapp;
+package Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,7 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.macro_manager.macroapp.R;
+import com.macro_manager.macroapp.Recipe;
+import com.macro_manager.macroapp.RecipeDetails;
+
 import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import Listeners.RecipeListener;
 
 //This code is adapted from https://www.youtube.com/watch?v=18VcnYN5_LM&ab_channel=Stevdza-San
 
@@ -22,8 +33,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     JSONArray response;
     Context context;
     String category;
+    RecipeListener recipeListener;
 
-    public RecipeAdapter(Context ct, String response, String category) {
+    ArrayList<Integer> recipeIDs = new ArrayList<>();
+
+    public RecipeAdapter(Context ct, String response, String category, RecipeListener recipeListener) {
         try {
             this.response = new JSONArray(response);
         } catch (Exception e) {
@@ -31,6 +45,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
         context = ct;
         this.category = category;
+        this.recipeListener = recipeListener;
         System.out.println(response);
     }
 
@@ -38,43 +53,72 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view;
-        if (category.equals("Diary")) {
-            view = inflater.inflate(R.layout.diary_recipe_row,parent,false);
-        } else {
-            view = inflater.inflate(R.layout.recipe_row,parent,false);
-        }
+        View view = inflater.inflate(R.layout.recipe_row,parent,false);
         return new RecipeViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (response != null) {
-            if (!category.equals("Diary")) {
                 try {
                     holder.titleText.setText(response.getJSONObject(position).getString("Title"));
+                    holder.idText.setText(response.getJSONObject(position).getString("RecipeID"));
+                    holder.serving.setText(response.getJSONObject(position).getString("ServingSize"));
                     holder.calCount.setText(String.valueOf(response.getJSONObject(position).getString("Calories")));
                     holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getString("Carbohydrate")));
                     holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getString("Fat")));
                     holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getString("Protein")));
                     holder.idText.setText(response.getJSONObject(position).getString("RecipeID"));
                     holder.serving.setText(response.getJSONObject(position).getString("ServingSize"));
+                    switch (category) {
+                        case "New" :
+                        case "Update" :
+                           
+                            holder.checkBox.setVisibility(View.VISIBLE);
+                            holder.checkBox.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (holder.checkBox.isChecked()) {
+                                        try {
+                                            recipeIDs.add(response.getJSONObject(position).getInt("RecipeID"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else {
+                                        try {
+                                            recipeIDs.removeAll(Arrays.asList(response.getJSONObject(position).getInt("RecipeID")));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    recipeListener.onRecipeChange(recipeIDs);
+                                }
+                            });
+                            break;
+                        default :
+                            holder.calCount.setText(String.valueOf(response.getJSONObject(position).getString("Calories")));
+                            holder.carbCount.setText(String.valueOf(response.getJSONObject(position).getString("Carbohydrate")));
+                            holder.fatCount.setText(String.valueOf(response.getJSONObject(position).getString("Fat")));
+                            holder.proteinCount.setText(String.valueOf(response.getJSONObject(position).getString("Protein")));
+                            holder.idText.setText(response.getJSONObject(position).getString("RecipeID"));
+                            holder.serving.setText(response.getJSONObject(position).getString("ServingSize"));
 
-                    holder.mainLayout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(context, RecipeDetails.class);
-                            intent.putExtra("title", holder.titleText.getText());
-                            intent.putExtra("calories", holder.calCount.getText());
-                            intent.putExtra("carbs", holder.carbCount.getText());
-                            intent.putExtra("fat", holder.fatCount.getText());
-                            intent.putExtra("protein", holder.proteinCount.getText());
-                            intent.putExtra("id", holder.idText.getText());
-                            intent.putExtra("servingSize", holder.serving.getText());
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
-                        }
-                    });
+                            holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(context, RecipeDetails.class);
+                                    intent.putExtra("title", holder.titleText.getText());
+                                    intent.putExtra("calories", holder.calCount.getText());
+                                    intent.putExtra("carbs", holder.carbCount.getText());
+                                    intent.putExtra("fat", holder.fatCount.getText());
+                                    intent.putExtra("protein", holder.proteinCount.getText());
+                                    intent.putExtra("id", holder.idText.getText());
+                                    intent.putExtra("servingSize", holder.serving.getText());
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(intent);
+                                }
+                            });
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -86,11 +130,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                     e.printStackTrace();
                 }
             }
-        } else {
-            holder.mainLayout.setVisibility(View.INVISIBLE);
-            Toast.makeText(context.getApplicationContext(), "You have no recipes, make some!", Toast.LENGTH_SHORT).show();
         }
-    }
+
 
     @Override
     public int getItemCount() {
@@ -104,7 +145,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView titleText, calCount, carbCount, fatCount, proteinCount, idText, serving;
+        TextView titleText, calCount, calCountt, carbCount, carbCountt, fatCount, fatCountt, proteinCount, proteintCountt, idText, serving;
         ConstraintLayout mainLayout;
         CheckBox checkBox;
 
@@ -113,9 +154,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
             titleText = itemView.findViewById(R.id.txtTitle);
             calCount = itemView.findViewById(R.id.txtCalCount);
+            calCountt = itemView.findViewById(R.id.textView4);
             carbCount = itemView.findViewById(R.id.txtCarbCount);
+            carbCountt = itemView.findViewById(R.id.textView5);
             fatCount = itemView.findViewById(R.id.txtFatCount);
+            fatCountt = itemView.findViewById(R.id.textView7);
             proteinCount = itemView.findViewById(R.id.txtProteinCount);
+            proteintCountt = itemView.findViewById(R.id.textView6);
             idText = itemView.findViewById(R.id.txtRecipeID);
             serving = itemView.findViewById(R.id.txtServingSizeRecipe);
             checkBox = itemView.findViewById(R.id.checkBox2);

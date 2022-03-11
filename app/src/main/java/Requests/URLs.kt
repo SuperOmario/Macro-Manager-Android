@@ -1,4 +1,4 @@
-package com.macro_manager.macroapp
+package Requests
 
 class URLs {
     var foodURL : String
